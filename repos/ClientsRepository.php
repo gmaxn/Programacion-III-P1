@@ -82,10 +82,6 @@ class ClientsRepository
                     $persona->email,
                     $persona->password,
                     $persona->role,
-                    $persona->firstname,
-                    $persona->lastname,
-                    $persona->dni,
-                    $persona->healthInsurance,
                     $persona->id
                 )
             );
