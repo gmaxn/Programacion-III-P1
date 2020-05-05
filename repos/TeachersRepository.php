@@ -1,6 +1,6 @@
 <?php
 
-class ClientsRepository
+class TeachersRepository
 {
     public static function saveSerialized($filename, $data)
     {
@@ -44,6 +44,7 @@ class ClientsRepository
     }
     public static function saveCSV($filename, $data)
     {
+
         $file = fopen($filename, 'a');
         $result = fwrite($file, $data);
         fclose($file);
@@ -51,6 +52,7 @@ class ClientsRepository
     }
     public static function readSerialized($filename)
     {
+
         if (!file_exists($filename)) {
             throw new Exception('File not found');
         }
@@ -75,25 +77,18 @@ class ClientsRepository
         fclose($file);
 
         $array = array();
-        foreach ($list as $persona) {
+        foreach ($list as $teacher) {
             array_push(
                 $array,
-                new Client(
-                    $persona->email,
-                    $persona->password,
-                    $persona->role,
-                    $persona->firstname,
-                    $persona->lastname,
-                    $persona->dni,
-                    $persona->healthInsurance,
-                    $persona->id
+                new Teacher (
+                    $teacher->legajo,
+                    $teacher->name,
+                    $teacher->image
                 )
             );
         }
 
         return $array ?? false;
-
-        return $list ?? false;
     }
     public static function readCSV($filename)
     {
@@ -129,26 +124,50 @@ class ClientsRepository
 
         return $list;
     }
+    public static function updateSerialized($filename, $list)
+    {
+        if (file_exists($filename)) {
+
+            $file = fopen($filename, 'w');
+            $result = fwrite($file, serialize($list));
+            fclose($file);
+        }
+
+        return $result ?? false;
+    }
+    public static function updateJSON($filename, $list)
+    {
+        $file = fopen($filename, 'w');
+        $result = fwrite($file, json_encode($list));
+        fclose($file);
+
+        return $result ?? false;
+    }
+    public static function updateCSV($filename, $data)
+    {
+        $file = fopen($filename, 'a');
+        $result = fwrite($file, $data);
+        fclose($file);
+        return $result ?? false;
+    }
     private static function rawCSVSerializer($dataSet)
     {
         $result = array();
 
         foreach ($dataSet as $data) {
 
-            $persona = new Persona(
+            $persona = new Product(
                 $data[1],
                 $data[2],
                 $data[3],
                 $data[4],
                 $data[5],
-                $data[6],
-                $data[7],
                 $data[0]
             );
 
             array_push($result, $persona);
         }
-        
+
         return $result;
     }
 }

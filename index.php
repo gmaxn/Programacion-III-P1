@@ -1,7 +1,7 @@
 <?php
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 require_once __DIR__ . '\controllers\ClientController.php';
-//require_once __DIR__ . '\controllers\ProductsController.php';
+require_once __DIR__ . '\controllers\TeacherController.php';
 
 $path_info = $_SERVER['PATH_INFO'] ?? '';
 
@@ -17,6 +17,16 @@ switch ($resource) {
 
     case '/login':
         $controller = new ClientController();
+        $controller->start();
+    break;
+
+    case '/materia':
+        $controller = new SubjectController();
+        $controller->start();
+    break;
+
+    case '/profesor':
+        $controller = new TeacherController();
         $controller->start();
     break;
 
