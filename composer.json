@@ -1,0 +1,12 @@
+{
+    "name": "maxin/parcial",
+    "authors": [
+        {
+            "name": "Maximiliano Nicolas Guelpa",
+            "email": "mguelpa@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^5.2"
+    }
+}
