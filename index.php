@@ -15,8 +15,8 @@ switch ($resource) {
         $controller->start();
     break;
 
-    case '/productos':
-        //$controller = new ProductsController();
+    case '/login':
+        $controller = new ClientController();
         $controller->start();
     break;
 

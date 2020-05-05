@@ -78,14 +78,10 @@ class ClientsRepository
         foreach ($list as $persona) {
             array_push(
                 $array,
-                new Persona(
+                new Client(
                     $persona->email,
                     $persona->password,
                     $persona->role,
-                    $persona->firstname,
-                    $persona->lastname,
-                    $persona->dni,
-                    $persona->healthInsurance,
                     $persona->id
                 )
             );

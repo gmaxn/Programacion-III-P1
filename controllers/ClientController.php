@@ -21,14 +21,21 @@ class ClientController
     }
     function start()
     {
-        switch ($this->getRoute()) 
-        {
+        switch ($this->getRoute()) {
             case 'POST/usuario':
 
                 $email = $_POST['email'] ?? null;
                 $password = $_POST['clave'] ?? null;
 
                 echo $this->postClientCreate($email, $password);
+                break;
+
+            case 'POST/login':
+
+                $email = $_POST['email'] ?? null;
+                $password = $_POST['clave'] ?? null;
+
+                echo $this->postClientLogin($email, $password);
                 break;
 
 
@@ -38,7 +45,7 @@ class ClientController
                 break;
         }
     }
-    // POST/user/
+    // POST/user
     function postClientCreate($email, $password)
     {
         $validationResult = $this->clientCreateValidation($email, $password);
@@ -60,7 +67,28 @@ class ClientController
 
         return json_encode($response);
     }
-     /////////////////////////
+    // POST/login
+    function postClientLogin($email, $password)
+    {
+        $validationResult = $this->loginValidation($email, $password);
+        $response = new Response('failure', $validationResult->errorMessage);
+
+        if ($validationResult->isValid) {
+
+            try {
+
+                $token = Authentication::authenticate($email, $password);
+                $response->status = 'succeed';
+                $response->data = array('token' => $token);
+            } catch (Exception $e) {
+
+                $response = new Response('failure', $e->getMessage());
+            }
+        }
+
+        return  json_encode($response);
+    }
+    /////////////////////////
     // REQUEST VALIDATIONS //
     /////////////////////////
     private function clientCreateValidation($email, $password)
@@ -72,6 +100,23 @@ class ClientController
         );
 
         foreach ($validationResults as $result) {
+            if (!$result->isValid) {
+                return $result;
+            }
+        }
+
+        return new ValidationResult('succeed', 'is valid request', true);
+    }
+    private function loginValidation($email, $password)
+    {
+        $validationResults = array(
+
+            Validator::emails($email),
+            Validator::passwords($password)
+        );
+
+        foreach ($validationResults as $result) {
+
             if (!$result->isValid) {
                 return $result;
             }

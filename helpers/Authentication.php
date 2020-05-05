@@ -1,7 +1,7 @@
 <?php
-//require_once __DIR__ . '\..\vendor\autoload.php';
-//require_once __DIR__ . '\..\entities\Client.php';
-//require_once __DIR__ . '\..\config\environment.php';
+require_once __DIR__ . '\..\vendor\autoload.php';
+require_once __DIR__ . '\..\entities\Client.php';
+require_once __DIR__ . '\..\config\environment.php';
 
 use \Firebase\JWT\JWT;
 
@@ -9,20 +9,20 @@ class Authentication
 {
     public static function authenticate($email, $password)
     {
-        $persona =  Persona::findByEmail($email);
+        $client =  Client::findByEmail($email);
 
-        if ($persona) {
+        if ($client) {
 
-            $hashedpass = $persona->password;
+            $hashedpass = $client->password;
 
             if (password_verify($password, $hashedpass)) {
 
                 return self::generateToken(
-                    $persona->id,
-                    $persona->email,
-                    $persona->firstname,
-                    $persona->lastname,
-                    $persona->role,
+                    $client->id,
+                    $client->email,
+                    $client->firstname ?? null,
+                    $client->lastname ?? null,
+                    $client->role ?? null,
                     strtotime('now'),
                     strtotime('now') + 60
                 );
