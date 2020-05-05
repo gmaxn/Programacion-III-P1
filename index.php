@@ -1,6 +1,6 @@
 <?php
 date_default_timezone_set('America/Argentina/Buenos_Aires');
-//require_once __DIR__ . '\controllers\PersonasController.php';
+require_once __DIR__ . '\controllers\ClientController.php';
 //require_once __DIR__ . '\controllers\ProductsController.php';
 
 $path_info = $_SERVER['PATH_INFO'] ?? '';
@@ -10,8 +10,8 @@ $resource = '/' . (explode('/', $path_info)[1] ?? '');
 
 switch ($resource) {
 
-    case '/personas':
-        //$controller = new PersonasController();
+    case '/usuario':
+        $controller = new ClientController();
         $controller->start();
     break;
 
